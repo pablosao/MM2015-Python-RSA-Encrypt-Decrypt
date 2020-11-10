@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'CryptoRSA.ui'
+# Form implementation generated from reading ui file 'frmCryptoRSA.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.1
 #
@@ -9,178 +9,156 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from pathlib import Path
 
-
-class Ui_frmrsa(object):
-    def setupUi(self, frmrsa):
-        frmrsa.setObjectName("frmrsa")
-        frmrsa.resize(1300, 600)
-        frmrsa.setMinimumSize(QtCore.QSize(1300, 600))
-        frmrsa.setMaximumSize(QtCore.QSize(1300, 600))
+class Ui_frmCryptoRSA(object):
+    def setupUi(self, frmCryptoRSA):
+        frmCryptoRSA.setObjectName("frmCryptoRSA")
+        frmCryptoRSA.setWindowModality(QtCore.Qt.NonModal)
+        frmCryptoRSA.resize(700, 480)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(frmCryptoRSA.sizePolicy().hasHeightForWidth())
+        frmCryptoRSA.setSizePolicy(sizePolicy)
+        frmCryptoRSA.setMinimumSize(QtCore.QSize(700, 480))
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap("files/privacy.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        frmrsa.setWindowIcon(icon)
-        self.centralwidget = QtWidgets.QWidget(frmrsa)
-        self.centralwidget.setObjectName("centralwidget")
-        self.treeWidget = QtWidgets.QTreeWidget(self.centralwidget)
-        self.treeWidget.setGeometry(QtCore.QRect(10, 10, 371, 581))
-        font = QtGui.QFont()
-        font.setPointSize(12)
-        font.setBold(True)
-        font.setWeight(75)
-        self.treeWidget.setFont(font)
-        self.treeWidget.setEditTriggers(QtWidgets.QAbstractItemView.DoubleClicked|QtWidgets.QAbstractItemView.EditKeyPressed|QtWidgets.QAbstractItemView.SelectedClicked)
-        self.treeWidget.setAlternatingRowColors(False)
-        self.treeWidget.setIconSize(QtCore.QSize(45, 45))
-        self.treeWidget.setTextElideMode(QtCore.Qt.ElideRight)
-        self.treeWidget.setUniformRowHeights(False)
-        self.treeWidget.setItemsExpandable(True)
-        self.treeWidget.setAnimated(False)
-        self.treeWidget.setHeaderHidden(True)
-        self.treeWidget.setObjectName("treeWidget")
-
-        item_0 = QtWidgets.QTreeWidgetItem(self.treeWidget)
+        frmCryptoRSA.setWindowIcon(icon)
+        frmCryptoRSA.setTabShape(QtWidgets.QTabWidget.Rounded)
+        frmCryptoRSA.setDockNestingEnabled(True)
+        frmCryptoRSA.setDockOptions(QtWidgets.QMainWindow.AllowNestedDocks|QtWidgets.QMainWindow.AllowTabbedDocks|QtWidgets.QMainWindow.AnimatedDocks|QtWidgets.QMainWindow.ForceTabbedDocks|QtWidgets.QMainWindow.VerticalTabs)
+        self.mainWidget = QtWidgets.QWidget(frmCryptoRSA)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.mainWidget.sizePolicy().hasHeightForWidth())
+        self.mainWidget.setSizePolicy(sizePolicy)
+        self.mainWidget.setObjectName("mainWidget")
+        self.tabcontrol = QtWidgets.QTabWidget(self.mainWidget)
+        self.tabcontrol.setGeometry(QtCore.QRect(10, 10, 680, 460))
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.tabcontrol.sizePolicy().hasHeightForWidth())
+        self.tabcontrol.setSizePolicy(sizePolicy)
+        self.tabcontrol.setMinimumSize(QtCore.QSize(680, 460))
+        self.tabcontrol.setMaximumSize(QtCore.QSize(680, 460))
+        self.tabcontrol.setTabPosition(QtWidgets.QTabWidget.West)
+        self.tabcontrol.setTabShape(QtWidgets.QTabWidget.Triangular)
+        self.tabcontrol.setIconSize(QtCore.QSize(24, 24))
+        self.tabcontrol.setObjectName("tabcontrol")
+        self.tabencriptado = QtWidgets.QWidget()
+        self.tabencriptado.setObjectName("tabencriptado")
+        self.btubicacion_exporta_llave = QtWidgets.QPushButton(self.tabencriptado)
+        self.btubicacion_exporta_llave.setGeometry(QtCore.QRect(590, 20, 51, 31))
+        self.btubicacion_exporta_llave.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.btubicacion_exporta_llave.setText("")
         icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap("files/generales.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        item_0.setIcon(0, icon1)
-        item_0.setFlags(QtCore.Qt.ItemIsSelectable|QtCore.Qt.ItemIsEnabled)
-        item_1 = QtWidgets.QTreeWidgetItem(item_0)
+        icon1.addPixmap(QtGui.QPixmap("files/file.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.btubicacion_exporta_llave.setIcon(icon1)
+        self.btubicacion_exporta_llave.setIconSize(QtCore.QSize(24, 24))
+        self.btubicacion_exporta_llave.setAutoDefault(False)
+        self.btubicacion_exporta_llave.setDefault(False)
+        self.btubicacion_exporta_llave.setFlat(False)
+        self.btubicacion_exporta_llave.setObjectName("btubicacion_exporta_llave")
+        self.tbubicacion_exporta_key = QtWidgets.QLineEdit(self.tabencriptado)
+        self.tbubicacion_exporta_key.setGeometry(QtCore.QRect(100, 20, 481, 31))
         font = QtGui.QFont()
         font.setPointSize(10)
-        item_1.setFont(0, font)
+        self.tbubicacion_exporta_key.setFont(font)
+        self.tbubicacion_exporta_key.setReadOnly(True)
+        self.tbubicacion_exporta_key.setObjectName("tbubicacion_exporta_key")
+        self.lbdestino_llave = QtWidgets.QLabel(self.tabencriptado)
+        self.lbdestino_llave.setGeometry(QtCore.QRect(20, 20, 61, 31))
+        font = QtGui.QFont()
+        font.setPointSize(11)
+        self.lbdestino_llave.setFont(font)
+        self.lbdestino_llave.setObjectName("lbdestino_llave")
+        self.lbarchivo_encriptar = QtWidgets.QLabel(self.tabencriptado)
+        self.lbarchivo_encriptar.setGeometry(QtCore.QRect(30, 70, 51, 21))
+        font = QtGui.QFont()
+        font.setPointSize(11)
+        self.lbarchivo_encriptar.setFont(font)
+        self.lbarchivo_encriptar.setObjectName("lbarchivo_encriptar")
+        self.lbubicacion_archivo_enc = QtWidgets.QLineEdit(self.tabencriptado)
+        self.lbubicacion_archivo_enc.setGeometry(QtCore.QRect(100, 70, 481, 31))
+        self.lbubicacion_archivo_enc.setReadOnly(True)
+        self.lbubicacion_archivo_enc.setObjectName("lbubicacion_archivo_enc")
+        self.btubicacion_archivo_enc = QtWidgets.QPushButton(self.tabencriptado)
+        self.btubicacion_archivo_enc.setGeometry(QtCore.QRect(590, 70, 51, 31))
+        self.btubicacion_archivo_enc.setText("")
+        self.btubicacion_archivo_enc.setIcon(icon1)
+        self.btubicacion_archivo_enc.setIconSize(QtCore.QSize(24, 24))
+        self.btubicacion_archivo_enc.setObjectName("btubicacion_archivo_enc")
         icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap("files/key.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        item_1.setIcon(0, icon2)
-        item_1.setFlags(QtCore.Qt.ItemIsSelectable|QtCore.Qt.ItemIsEnabled)
-        item_1 = QtWidgets.QTreeWidgetItem(item_0)
-        font = QtGui.QFont()
-        font.setPointSize(10)
-        item_1.setFont(0, font)
+        icon2.addPixmap(QtGui.QPixmap("files/Encriptado.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.tabcontrol.addTab(self.tabencriptado, icon2, "")
+        self.tabdesencriptado = QtWidgets.QWidget()
+        self.tabdesencriptado.setObjectName("tabdesencriptado")
         icon3 = QtGui.QIcon()
-        icon3.addPixmap(QtGui.QPixmap("files/info.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        item_1.setIcon(0, icon3)
-        item_1.setFlags(QtCore.Qt.ItemIsSelectable|QtCore.Qt.ItemIsEnabled)
-        item_0 = QtWidgets.QTreeWidgetItem(self.treeWidget)
+        icon3.addPixmap(QtGui.QPixmap("files/Desencriptado.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.tabcontrol.addTab(self.tabdesencriptado, icon3, "")
+        self.tabinformacion = QtWidgets.QWidget()
+        self.tabinformacion.setObjectName("tabinformacion")
+        self.minformacion = QtWidgets.QTextEdit(self.tabinformacion)
+        self.minformacion.setGeometry(QtCore.QRect(0, 0, 651, 451))
+        self.minformacion.setReadOnly(True)
+        self.minformacion.setObjectName("minformacion")
         icon4 = QtGui.QIcon()
-        icon4.addPixmap(QtGui.QPixmap("files/Encriptado.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        item_0.setIcon(0, icon4)
-        item_0.setFlags(QtCore.Qt.ItemIsSelectable|QtCore.Qt.ItemIsEnabled)
-        item_0 = QtWidgets.QTreeWidgetItem(self.treeWidget)
-        icon5 = QtGui.QIcon()
-        icon5.addPixmap(QtGui.QPixmap("files/Desencriptado.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        item_0.setIcon(0, icon5)
-        item_0.setFlags(QtCore.Qt.ItemIsSelectable|QtCore.Qt.ItemIsEnabled)
-        self.treeWidget.header().setVisible(False)
-        self.treeWidget.header().setCascadingSectionResizes(False)
-        self.tabpanel = QtWidgets.QTabWidget(self.centralwidget)
-        self.tabpanel.setEnabled(True)
-        self.tabpanel.setGeometry(QtCore.QRect(390, 10, 901, 581))
-        self.tabpanel.setStyleSheet("QTabWidget::tab::disabled {width: 0; height: 0; margin: 0; padding: 0; border: none;} ")
-        self.tabpanel.setTabPosition(QtWidgets.QTabWidget.North)
-        self.tabpanel.setTabShape(QtWidgets.QTabWidget.Rounded)
-        self.tabpanel.setElideMode(QtCore.Qt.ElideNone)
-        self.tabpanel.setUsesScrollButtons(True)
-        self.tabpanel.setDocumentMode(False)
-        self.tabpanel.setTabsClosable(False)
-        self.tabpanel.setMovable(False)
-        self.tabpanel.setTabBarAutoHide(False)
-        self.tabpanel.setObjectName("tabpanel")
-        self.tabgenera_llave = QtWidgets.QWidget()
-        self.tabgenera_llave.setEnabled(True)
-        font = QtGui.QFont()
-        font.setPointSize(12)
-        self.tabgenera_llave.setFont(font)
-        self.tabgenera_llave.setStyleSheet("")
-        self.tabgenera_llave.setObjectName("tabgenera_llave")
-        self.tabpanel.addTab(self.tabgenera_llave, "")
-        self.tab_about_us = QtWidgets.QWidget()
-        self.tab_about_us.setEnabled(True)
-        font = QtGui.QFont()
-        font.setPointSize(12)
-        self.tab_about_us.setFont(font)
-        self.tab_about_us.setStyleSheet("")
-        self.tab_about_us.setObjectName("tab_about_us")
-        self.plainTextEdit = QtWidgets.QPlainTextEdit(self.tab_about_us)
-        self.plainTextEdit.setGeometry(QtCore.QRect(10, 10, 881, 541))
-        font = QtGui.QFont()
-        font.setPointSize(14)
-        self.plainTextEdit.setFont(font)
-        self.plainTextEdit.setFrameShape(QtWidgets.QFrame.NoFrame)
-        self.plainTextEdit.setFrameShadow(QtWidgets.QFrame.Plain)
-        self.plainTextEdit.setReadOnly(True)
-        self.plainTextEdit.setTextInteractionFlags(QtCore.Qt.NoTextInteraction)
-        self.plainTextEdit.setBackgroundVisible(False)
-        self.plainTextEdit.setCenterOnScroll(False)
-        self.plainTextEdit.setObjectName("plainTextEdit")
-        self.tabpanel.addTab(self.tab_about_us, "")
-        self.tabEncriptado = QtWidgets.QWidget()
-        self.tabEncriptado.setEnabled(False)
-        font = QtGui.QFont()
-        font.setPointSize(12)
-        self.tabEncriptado.setFont(font)
-        self.tabEncriptado.setStyleSheet("")
-        self.tabEncriptado.setObjectName("tabEncriptado")
-        self.tabpanel.addTab(self.tabEncriptado, "")
-        self.tabDesencriptado = QtWidgets.QWidget()
-        self.tabDesencriptado.setEnabled(False)
-        font = QtGui.QFont()
-        font.setPointSize(12)
-        self.tabDesencriptado.setFont(font)
-        self.tabDesencriptado.setStyleSheet("")
-        self.tabDesencriptado.setObjectName("tabDesencriptado")
-        self.tabpanel.addTab(self.tabDesencriptado, "")
-        frmrsa.setCentralWidget(self.centralwidget)
-        self.actionGenerar_Llaves = QtWidgets.QAction(frmrsa)
-        self.actionGenerar_Llaves.setObjectName("actionGenerar_Llaves")
+        icon4.addPixmap(QtGui.QPixmap("files/generales.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.tabcontrol.addTab(self.tabinformacion, icon4, "")
+        frmCryptoRSA.setCentralWidget(self.mainWidget)
 
-        self.retranslateUi(frmrsa)
-        self.tabpanel.setCurrentIndex(0)
-        QtCore.QMetaObject.connectSlotsByName(frmrsa)
+        self.retranslateUi(frmCryptoRSA)
+        self.tabcontrol.setCurrentIndex(0)
+        self.btubicacion_exporta_llave.clicked.connect(self.selectExportKey)
+        self.btubicacion_archivo_enc.clicked.connect(self.selectEncFile)
+        QtCore.QMetaObject.connectSlotsByName(frmCryptoRSA)
 
-    def retranslateUi(self, frmrsa):
+    def retranslateUi(self, frmCryptoRSA):
         _translate = QtCore.QCoreApplication.translate
-        frmrsa.setWindowTitle(_translate("frmrsa", "CryptoRSA"))
-        self.treeWidget.setSortingEnabled(False)
-        self.treeWidget.headerItem().setText(0, _translate("frmrsa", "1. Opciones"))
-        __sortingEnabled = self.treeWidget.isSortingEnabled()
-        self.treeWidget.setSortingEnabled(False)
-        self.treeWidget.topLevelItem(0).setText(0, _translate("frmrsa", "Generales"))
-        self.treeWidget.topLevelItem(0).child(0).setText(0, _translate("frmrsa", "Generación de Llaves"))
-        self.treeWidget.topLevelItem(0).child(1).setText(0, _translate("frmrsa", "Acerca del Programa"))
-        self.treeWidget.topLevelItem(1).setText(0, _translate("frmrsa", "Encriptado"))
-        self.treeWidget.topLevelItem(2).setText(0, _translate("frmrsa", "Desencriptado"))
-        self.treeWidget.setSortingEnabled(__sortingEnabled)
-        self.tabpanel.setTabText(self.tabpanel.indexOf(self.tabgenera_llave), _translate("frmrsa", "Genera Llaves"))
-        self.plainTextEdit.setPlainText(_translate("frmrsa", "Encriptado y Desencriptado de archivos .txt basado en la criptografía RSA, utilizando una clave pública y privada.\n"
-"\n"
-"El programa facilita la generación y exportación de la clave publica y privada que es utilizada para la encriptación y desencriptación del archivo.\n"
-"\n"
-"Opciones:\n"
-"     \n"
-"     Generales\n"
-"          Generación de Llaves: Opción para generar la llave Pública y Privada\n"
-"          Acerca del Programa: Información general del programa\n"
-"\n"
-"     Encriptado: Opción donde se seleccionara la llave para \n"
-"     encriptado y el archivo a encriptar\n"
-"\n"
-"     Desencriptado: Opción donde se seleccionara la llave para la \n"
-"     desencriptación y el archivo .txt a desencriptar.\n"
-"\n"
-"---\n"
-"Pablo Sao - 11540\n"
-"Mirka Monzón - 18130"))
-        self.tabpanel.setTabText(self.tabpanel.indexOf(self.tab_about_us), _translate("frmrsa", "Acerca del Programa"))
-        self.tabpanel.setTabText(self.tabpanel.indexOf(self.tabEncriptado), _translate("frmrsa", "Encriptado"))
-        self.tabpanel.setTabText(self.tabpanel.indexOf(self.tabDesencriptado), _translate("frmrsa", "Desencriptado"))
-        self.actionGenerar_Llaves.setText(_translate("frmrsa", "Generar Llaves"))
-        self.treeWidget.expandAll()
+        frmCryptoRSA.setWindowTitle(_translate("frmCryptoRSA", "CryptoRSA"))
+
+        self.lbdestino_llave.setText(_translate("frmCryptoRSA", "Exportar"))
+        self.lbarchivo_encriptar.setText(_translate("frmCryptoRSA", "Archivo"))
+        self.tabcontrol.setTabText(self.tabcontrol.indexOf(self.tabencriptado), _translate("frmCryptoRSA", "Encriptado"))
+        self.tabcontrol.setTabText(self.tabcontrol.indexOf(self.tabdesencriptado), _translate("frmCryptoRSA", "Desencriptado"))
+        self.minformacion.setHtml(_translate("frmCryptoRSA", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8pt; font-weight:400; font-style:normal;\">\n"
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; font-weight:600;\">CrytpoRSA</span></p>\n"
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Universidad del Valle de Guatemala</p>\n"
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">MM2015 - Matemática Discreta 1</p>\n"
+"<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">Pablo Sao - 11530</span></p>\n"
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">Mirka Monzón - 18139</span></p>\n"
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">25 de noviembre de 2020</p>\n"
+"<hr />\n"
+"<p align=\"justify\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">El proyecto consiste en escribir un programa capaz de encriptar y desencriptar un mensaje, utilizando el sistema criptográfico RSA.</p>\n"
+"<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>"))
+        self.tabcontrol.setTabText(self.tabcontrol.indexOf(self.tabinformacion), _translate("frmCryptoRSA", "Información"))
+
+    def selectExportKey(self):
+        fname = QtWidgets.QFileDialog.getExistingDirectory()
+        self.tbubicacion_exporta_key.setText(fname)
+
+    def selectEncFile(self):
+
+        try:
+            fname,_ = QtWidgets.QFileDialog.getOpenFileName(None, caption="Select a file...",
+                                            directory='./', filter="Archivos de Texto (*.txt)")
+        except Exception as e:
+            print(e)
+
+        self.lbubicacion_archivo_enc.setText(fname)
 
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
-    frmrsa = QtWidgets.QMainWindow()
-    ui = Ui_frmrsa()
-    ui.setupUi(frmrsa)
-    frmrsa.show()
+    frmCryptoRSA = QtWidgets.QMainWindow()
+    ui = Ui_frmCryptoRSA()
+    ui.setupUi(frmCryptoRSA)
+    frmCryptoRSA.show()
     sys.exit(app.exec_())
