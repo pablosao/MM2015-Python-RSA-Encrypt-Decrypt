@@ -9,22 +9,21 @@
 #              encriptar el texto contenido en un archivo .txt
 #
 
-
 from PyQt5 import QtCore, QtGui, QtWidgets
 from pathlib import Path
 
 class Ui_frmCryptoRSA(object):
-
     def setupUi(self, frmCryptoRSA):
         frmCryptoRSA.setObjectName("frmCryptoRSA")
         frmCryptoRSA.setWindowModality(QtCore.Qt.NonModal)
-        frmCryptoRSA.resize(930, 600)
+        frmCryptoRSA.resize(928, 593)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(frmCryptoRSA.sizePolicy().hasHeightForWidth())
         frmCryptoRSA.setSizePolicy(sizePolicy)
-        frmCryptoRSA.setMinimumSize(QtCore.QSize(700, 480))
+        frmCryptoRSA.setMinimumSize(QtCore.QSize(928, 593))
+        frmCryptoRSA.setMaximumSize(QtCore.QSize(928, 593))
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap("files/privacy.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         frmCryptoRSA.setWindowIcon(icon)
@@ -236,10 +235,10 @@ class Ui_frmCryptoRSA(object):
         frmCryptoRSA.setCentralWidget(self.mainWidget)
 
         self.retranslateUi(frmCryptoRSA)
-        self.tabcontrol.setCurrentIndex(2)
+        self.tabcontrol.setCurrentIndex(1)
 
         """
-            CONFIGURACIÓN DE EVENTOS
+                    CONFIGURACIÓN DE EVENTOS
         """
         # Botón para seleccionar la ubicación donde se exportara la llave para desencriptar
         self.btubicacion_exporta_llave.clicked.connect(self.selectExportKey)
@@ -258,6 +257,7 @@ class Ui_frmCryptoRSA(object):
 
         # Botón para iniciar desencriptado
         self.btdesencriptar_archivo.clicked.connect(self.DecryptFile)
+
         QtCore.QMetaObject.connectSlotsByName(frmCryptoRSA)
 
     def retranslateUi(self, frmCryptoRSA):
@@ -298,12 +298,13 @@ class Ui_frmCryptoRSA(object):
 "<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;\"><br /></p></body></html>"))
         self.tabcontrol.setTabText(self.tabcontrol.indexOf(self.tabinformacion), _translate("frmCryptoRSA", "Información"))
 
-    def isNotBlank(self,string_value):
+    def isNotBlank(self, string_value):
         """
         Metodo para validar si un string es nulo o vacio
         :param string_value: String, valor a evaluar
         :return: Boolean, True si tiene un valor, False si esta vacio o es nulo
         """
+        
         return bool(string_value and string_value.strip())
 
     ############################################################
@@ -311,12 +312,13 @@ class Ui_frmCryptoRSA(object):
     #       METODOS PARA ENCRIPTADO DE ARCHIVO
     #
     ############################################################
+
     def selectExportKey(self):
         """
         Metodo para seleccionar la carpeta donde se guardará la llave publica
         :return: None
         """
-        #Limpiamos los campos
+        # Limpiamos los campos
         self.clearFields()
 
         # Se muestra ventana para seleccionar carpeta de destino
@@ -324,7 +326,6 @@ class Ui_frmCryptoRSA(object):
 
         # Se asigna el path de la carpeta al text box de ubicacion
         self.tbubicacion_exporta_key.setText(fname)
-
 
     def selectEncFile(self):
         """
@@ -342,10 +343,10 @@ class Ui_frmCryptoRSA(object):
             fname = Path(fname)
 
             # leemos archivo
-            if(fname.exists()):
+            if (fname.exists()):
                 # mostramos el texto
                 self.temensaje_enc.setText(fname.read_text())
-                #habilitamos el cambpo para edición
+                # habilitamos el cambpo para edición
                 self.temensaje_enc.setEnabled(True)
             else:
                 self.temensaje_enc.setText("")
@@ -366,10 +367,10 @@ class Ui_frmCryptoRSA(object):
         path_file = self.lbubicacion_archivo_enc.text()
         message = self.temensaje_enc.toPlainText()
 
-        #Comprobamos si los datos estan llenos
-        if(self.isNotBlank(path_key)):
-            if(self.isNotBlank(path_file)):
-                if(self.isNotBlank(message)):
+        # Comprobamos si los datos estan llenos
+        if (self.isNotBlank(path_key)):
+            if (self.isNotBlank(path_file)):
+                if (self.isNotBlank(message)):
                     # Se inicia proceso de encriptado
                     print("iniciando")
 
@@ -399,13 +400,12 @@ class Ui_frmCryptoRSA(object):
         try:
             # Solicitamos el ingreso del archivo
             fname, _ = QtWidgets.QFileDialog.getOpenFileName(None, caption="Select a file...",
-                                                                 directory='./', filter="Llave Publica (*.pem)")
+                                                             directory='./', filter="Llave Publica (*.pem)")
             # Colocamos el path visible para el usuario
             self.tbubicacion_key_desc.setText(fname)
 
         except Exception as e:
             print(e)
-
 
     def selectDecFile(self):
         """
@@ -416,7 +416,7 @@ class Ui_frmCryptoRSA(object):
         try:
             # Solicitamos el ingreso del archivo
             fname, _ = QtWidgets.QFileDialog.getOpenFileName(None, caption="Select a file...",
-                                                                 directory='./', filter="Archivos de Texto (*.txt)")
+                                                             directory='./', filter="Archivos de Texto (*.txt)")
             # Colocamos el path visible para el usuario
             self.lbubicacion_archivo_desc.setText(fname)
 
