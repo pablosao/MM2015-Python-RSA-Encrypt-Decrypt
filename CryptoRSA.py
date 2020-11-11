@@ -292,18 +292,34 @@ class Ui_frmCryptoRSA(object):
 "<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;\"><br /></p></body></html>"))
         self.tabcontrol.setTabText(self.tabcontrol.indexOf(self.tabinformacion), _translate("frmCryptoRSA", "Información"))
 
-    def isNotBlank(self,myString):
-        return bool(myString and myString.strip())
+    def isNotBlank(self,string_value):
+        """
+        Metodo para validar si un string es nulo o vacio
+        :param string_value: String, valor a evaluar
+        :return: Boolean, True si tiene un valor, False si esta vacio o es nulo
+        """
+        return bool(string_value and string_value.strip())
 
     def selectExportKey(self):
+        """
+        Metodo para seleccionar la carpeta donde se guardará la llave publica
+        :return: None
+        """
         #Limpiamos los campos
         self.clearFields()
 
+        # Se muestra ventana para seleccionar carpeta de destino
         fname = QtWidgets.QFileDialog.getExistingDirectory()
+
+        # Se asigna el path de la carpeta al text box de ubicacion
         self.tbubicacion_exporta_key.setText(fname)
 
-    def selectEncFile(self):
 
+    def selectEncFile(self):
+        """
+        Metodo para seleccionar el archivo .txt a encriptar
+        :return: None
+        """
         try:
             # Solicitamos el ingreso del archivo
             fname, _ = QtWidgets.QFileDialog.getOpenFileName(None, caption="Select a file...",
@@ -328,6 +344,12 @@ class Ui_frmCryptoRSA(object):
             print(e)
 
     def EncriptFile(self):
+        """
+        Método para encriptar archivo seleccionado, admitiendo cambios en el texto
+        antes de iniciar el proceso
+        :return: None
+        """
+
         # Obtenemos los datos seleccionados por el usuario
         path_key = self.tbubicacion_exporta_key.text()
         path_file = self.lbubicacion_archivo_enc.text()
@@ -335,13 +357,10 @@ class Ui_frmCryptoRSA(object):
 
         #Comprobamos si los datos estan llenos
         if(self.isNotBlank(path_key)):
-            print("ruta a exportar")
-            
             if(self.isNotBlank(path_file)):
-                print("selecciono archivo")
-
                 if(self.isNotBlank(message)):
-                    print("contiene mensaje")
+                    # Se inicia proceso de encriptado
+
 
                 else:
                     print("El archivo que selecciono se encuentra vacio")
@@ -353,7 +372,10 @@ class Ui_frmCryptoRSA(object):
 
 
     def clearFields(self):
-
+        """
+        Metodo para limpiar los campos de ingreso visibiles por el usuario
+        :return: None
+        """
         # Sección de encriptado
         self.tbubicacion_exporta_key.setText("")
         self.lbubicacion_archivo_enc.setText("")
