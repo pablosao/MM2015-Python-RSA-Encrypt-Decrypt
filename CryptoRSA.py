@@ -14,6 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from pathlib import Path
 
 class Ui_frmCryptoRSA(object):
+
     def setupUi(self, frmCryptoRSA):
         frmCryptoRSA.setObjectName("frmCryptoRSA")
         frmCryptoRSA.setWindowModality(QtCore.Qt.NonModal)
@@ -249,9 +250,14 @@ class Ui_frmCryptoRSA(object):
         # Botón para iniciar encriptación
         self.btencriptar_archivo.clicked.connect(self.EncriptFile)
 
-        self.btubicacion_archivo_desc.clicked.connect(self.btubicacion_archivo_desc.click)
-        self.btubicacion_llave_desc.clicked.connect(self.btubicacion_llave_desc.click)
-        self.btdesencriptar_archivo.clicked.connect(self.btdesencriptar_archivo.click)
+        # Botón para seleccionar archivo a desencriptar
+        self.btubicacion_archivo_desc.clicked.connect(self.selectDecFile)
+
+        # Boton para seleccionar llave de desencriptado
+        self.btubicacion_llave_desc.clicked.connect(self.selectImportKey)
+
+        # Botón para iniciar desencriptado
+        self.btdesencriptar_archivo.clicked.connect(self.DecryptFile)
         QtCore.QMetaObject.connectSlotsByName(frmCryptoRSA)
 
     def retranslateUi(self, frmCryptoRSA):
@@ -300,6 +306,11 @@ class Ui_frmCryptoRSA(object):
         """
         return bool(string_value and string_value.strip())
 
+    ############################################################
+    #
+    #       METODOS PARA ENCRIPTADO DE ARCHIVO
+    #
+    ############################################################
     def selectExportKey(self):
         """
         Metodo para seleccionar la carpeta donde se guardará la llave publica
@@ -360,7 +371,7 @@ class Ui_frmCryptoRSA(object):
             if(self.isNotBlank(path_file)):
                 if(self.isNotBlank(message)):
                     # Se inicia proceso de encriptado
-
+                    print("iniciando")
 
                 else:
                     print("El archivo que selecciono se encuentra vacio")
@@ -369,7 +380,86 @@ class Ui_frmCryptoRSA(object):
         else:
             print("Debe ingresar la ubicación para guardar la llave para desencriptar")
 
+    ############################################################
+    #
+    #       METODOS PARA DESENCRIPTADO DE ARCHIVO
+    #
+    ############################################################
 
+    def selectImportKey(self):
+        """
+        Metodo para seleccionar el archivo de la llave publica para
+        desencriptar el mensaje
+        :return: None
+        """
+
+        # Limpiamos los campos
+        self.clearFields()
+
+        try:
+            # Solicitamos el ingreso del archivo
+            fname, _ = QtWidgets.QFileDialog.getOpenFileName(None, caption="Select a file...",
+                                                                 directory='./', filter="Llave Publica (*.pem)")
+            # Colocamos el path visible para el usuario
+            self.tbubicacion_key_desc.setText(fname)
+
+        except Exception as e:
+            print(e)
+
+
+    def selectDecFile(self):
+        """
+        Metodo para seleccionar el archivo .txt a desencriptar
+        :return: None
+        """
+
+        try:
+            # Solicitamos el ingreso del archivo
+            fname, _ = QtWidgets.QFileDialog.getOpenFileName(None, caption="Select a file...",
+                                                                 directory='./', filter="Archivos de Texto (*.txt)")
+            # Colocamos el path visible para el usuario
+            self.lbubicacion_archivo_desc.setText(fname)
+
+            # Creamos una ruta Path
+            fname = Path(fname)
+
+            # leemos archivo
+            if (fname.exists()):
+                # mostramos el texto
+                self.temensaje_desc.setText(fname.read_text())
+
+            else:
+                self.temensaje_desc.setText("")
+
+        except Exception as e:
+            print(e)
+
+    def DecryptFile(self):
+        """
+        Método para desencriptar archivo seleccionado
+        :return: None
+        """
+
+        # Obtenemos los datos seleccionados por el usuario
+        path_key = self.tbubicacion_key_desc.text()
+        path_file = self.lbubicacion_archivo_desc.text()
+        message = self.temensaje_desc.toPlainText()
+
+        # Comprobamos si los datos estan llenos
+        if (self.isNotBlank(path_key)):
+            if (self.isNotBlank(path_file)):
+                if (self.isNotBlank(message)):
+                    # Se inicia proceso de encriptado
+                    print("iniciando")
+
+                else:
+                    print("El archivo que selecciono se encuentra vacio")
+            else:
+                print("Debe ingresar la ubicación del archivo a desencriptar")
+        else:
+            print("Debe ingresar la ubicación para guardar la llave para desencriptar")
+
+    ####
 
     def clearFields(self):
         """
@@ -381,6 +471,9 @@ class Ui_frmCryptoRSA(object):
         self.lbubicacion_archivo_enc.setText("")
         self.temensaje_enc.setText("")
         self.temensaje_enc.setEnabled(False)
+
+        # Sección de desencriptado
+        self.tbubicacion_key_desc.setText("")
 
 
 if __name__ == "__main__":
