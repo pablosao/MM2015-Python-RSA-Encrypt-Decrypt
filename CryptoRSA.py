@@ -11,6 +11,8 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from pathlib import Path
+import ManagerRSA as pRSA
+
 
 class Ui_frmCryptoRSA(object):
     def setupUi(self, frmCryptoRSA):
@@ -235,7 +237,7 @@ class Ui_frmCryptoRSA(object):
         frmCryptoRSA.setCentralWidget(self.mainWidget)
 
         self.retranslateUi(frmCryptoRSA)
-        self.tabcontrol.setCurrentIndex(1)
+        self.tabcontrol.setCurrentIndex(2)
 
         """
                     CONFIGURACIÓN DE EVENTOS
@@ -273,7 +275,7 @@ class Ui_frmCryptoRSA(object):
         self.tabcontrol.setTabText(self.tabcontrol.indexOf(self.tabencriptado), _translate("frmCryptoRSA", "Encriptado"))
         self.lbdesencriptado_archivo.setText(_translate("frmCryptoRSA", "Desencriptado de Archivo"))
         self.lbdestino_llave_2.setText(_translate("frmCryptoRSA", "Llave"))
-        self.lbmensaje_enc_2.setText(_translate("frmCryptoRSA", "Mensaje a Encriptar"))
+        self.lbmensaje_enc_2.setText(_translate("frmCryptoRSA", "Mensaje a Desencriptar"))
         self.btdesencriptar_archivo.setText(_translate("frmCryptoRSA", "Desencriptar"))
         self.lbarchivo_encriptar_2.setText(_translate("frmCryptoRSA", "Archivo"))
         self.lbubicacion_archivo_desc.setToolTip(_translate("frmCryptoRSA", "<html><head/><body><p><span style=\" font-size:10pt;\">Ubicación del </span><span style=\" font-size:10pt; font-weight:600;\">archivo</span><span style=\" font-size:10pt;\"> (</span><span style=\" font-size:10pt; font-weight:600;\">.txt</span><span style=\" font-size:10pt;\">) a desencriptar. </span></p></body></html>"))
@@ -304,7 +306,7 @@ class Ui_frmCryptoRSA(object):
         :param string_value: String, valor a evaluar
         :return: Boolean, True si tiene un valor, False si esta vacio o es nulo
         """
-        
+
         return bool(string_value and string_value.strip())
 
     ############################################################
@@ -371,8 +373,26 @@ class Ui_frmCryptoRSA(object):
         if (self.isNotBlank(path_key)):
             if (self.isNotBlank(path_file)):
                 if (self.isNotBlank(message)):
+
                     # Se inicia proceso de encriptado
-                    print("iniciando")
+                    QtWidgets.QApplication.setOverrideCursor(QtCore.Qt.WaitCursor)
+
+                    public_key = pRSA.genera_key(path_key)
+                    enc_file = Path(path_file)
+
+                    mensaje_enc = pRSA.Encrypt(enc_file.read_bytes(),public_key)
+
+                    # Escribimos en archivo
+                    archivo_encriptado = Path(path_file)
+                    archivo_encriptado.touch(mode=0o600)
+                    archivo_encriptado.write_bytes(mensaje_enc)
+
+                    self.clearFields()
+                    self.temensaje_enc.setReadOnly(True)
+                    self.temensaje_enc.setEnabled(True)
+                    self.temensaje_enc.setText(mensaje_enc.decode())
+
+                    QtWidgets.QApplication.restoreOverrideCursor()
 
                 else:
                     print("El archivo que selecciono se encuentra vacio")
@@ -380,6 +400,18 @@ class Ui_frmCryptoRSA(object):
                 print("Debe ingresar la ubicación del archivo a desencriptar")
         else:
             print("Debe ingresar la ubicación para guardar la llave para desencriptar")
+            msj = QtWidgets.QMessageBox()
+            msj.setIcon(QtWidgets.QMessageBox.Warning)
+            icon = QtGui.QIcon()
+            icon.addPixmap(QtGui.QPixmap("files/privacy.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+            msj.setWindowIcon(icon)
+            msj.setText("Debe seleccionar ubicación para exportar la llave de desencriptación")
+            #msj.setInformativeText("Debe ingresar la ubicación para exportar la llave de desencriptación")
+            msj.setWindowTitle("Información Faltante")
+            #msj.setDetailedText("The details are as follows:")
+            msj.setStandardButtons(QtWidgets.QMessageBox.Ok )
+            msj.exec_()
+
 
     ############################################################
     #
@@ -449,8 +481,25 @@ class Ui_frmCryptoRSA(object):
         if (self.isNotBlank(path_key)):
             if (self.isNotBlank(path_file)):
                 if (self.isNotBlank(message)):
+
                     # Se inicia proceso de encriptado
-                    print("iniciando")
+                    QtWidgets.QApplication.setOverrideCursor(QtCore.Qt.WaitCursor)
+
+
+                    desc_file = Path(path_file)
+                    llave_privada = Path(path_key)
+
+                    mensaje_dec = pRSA.Decrypt(desc_file.read_text(), llave_privada.read_bytes())
+
+                    # Escribimos en archivo
+                    archivo_desencriptado = Path(path_file)
+                    archivo_desencriptado.touch(mode=0o600)
+                    archivo_desencriptado.write_bytes(mensaje_dec)
+
+                    self.clearFields()
+                    self.temensaje_desc.setText(mensaje_dec.decode())
+
+                    QtWidgets.QApplication.restoreOverrideCursor()
 
                 else:
                     print("El archivo que selecciono se encuentra vacio")
@@ -459,7 +508,6 @@ class Ui_frmCryptoRSA(object):
         else:
             print("Debe ingresar la ubicación para guardar la llave para desencriptar")
 
-    ####
 
     def clearFields(self):
         """
@@ -471,9 +519,12 @@ class Ui_frmCryptoRSA(object):
         self.lbubicacion_archivo_enc.setText("")
         self.temensaje_enc.setText("")
         self.temensaje_enc.setEnabled(False)
+        self.temensaje_enc.setReadOnly(False)
 
         # Sección de desencriptado
         self.tbubicacion_key_desc.setText("")
+        self.lbubicacion_archivo_desc.setText("")
+        self.temensaje_desc.setText("")
 
 
 if __name__ == "__main__":

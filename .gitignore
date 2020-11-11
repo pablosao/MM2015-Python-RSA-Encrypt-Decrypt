@@ -4,3 +4,5 @@
 .idea/MM2015-Python-RSA-Encrypt-Decrypt.iml
 .idea/modules.xml
 .idea/vcs.xml
+*.pyc
+*.pem
