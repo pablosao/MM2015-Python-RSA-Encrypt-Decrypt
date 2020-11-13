@@ -395,22 +395,16 @@ class Ui_frmCryptoRSA(object):
                     QtWidgets.QApplication.restoreOverrideCursor()
 
                 else:
-                    print("El archivo que selecciono se encuentra vacio")
+                    #print("El archivo que selecciono se encuentra vacio")
+                    self.showDialogMessage("El archivo que ha seleccionado se encuentra vacío, debe seleccionar otro archivo o ingresar un texto.")
             else:
-                print("Debe ingresar la ubicación del archivo a desencriptar")
+                #print("Debe ingresar la ubicación del archivo a desencriptar")
+                self.showDialogMessage("Debe seleccionar ubicación del archivo a encriptar")
+                self.selectEncFile()
         else:
-            print("Debe ingresar la ubicación para guardar la llave para desencriptar")
-            msj = QtWidgets.QMessageBox()
-            msj.setIcon(QtWidgets.QMessageBox.Warning)
-            icon = QtGui.QIcon()
-            icon.addPixmap(QtGui.QPixmap("files/privacy.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-            msj.setWindowIcon(icon)
-            msj.setText("Debe seleccionar ubicación para exportar la llave de desencriptación")
-            #msj.setInformativeText("Debe ingresar la ubicación para exportar la llave de desencriptación")
-            msj.setWindowTitle("Información Faltante")
-            #msj.setDetailedText("The details are as follows:")
-            msj.setStandardButtons(QtWidgets.QMessageBox.Ok )
-            msj.exec_()
+            #print("Debe ingresar la ubicación para guardar la llave para desencriptar")
+            self.showDialogMessage("Debe seleccionar ubicación para exportar la llave de desencriptación")
+            self.selectExportKey()
 
 
     ############################################################
@@ -502,11 +496,16 @@ class Ui_frmCryptoRSA(object):
                     QtWidgets.QApplication.restoreOverrideCursor()
 
                 else:
-                    print("El archivo que selecciono se encuentra vacio")
+                    #print("El archivo que selecciono se encuentra vacio")
+                    self.showDialogMessage("El archivo que ha seleccionado se encuentra vacío, debe seleccionar otro archivo")
             else:
-                print("Debe ingresar la ubicación del archivo a desencriptar")
+                #print("Debe ingresar la ubicación del archivo a desencriptar")
+                self.showDialogMessage("Debe seleccionar el archivo que desea desencriptar")
+                self.selectDecFile()
         else:
-            print("Debe ingresar la ubicación para guardar la llave para desencriptar")
+            #print("Debe ingresar la ubicación para guardar la llave para desencriptar")
+            self.showDialogMessage("Debe seleccionar la llave privada para desencriptar el mensaje")
+            self.selectImportKey()
 
 
     def clearFields(self):
@@ -526,6 +525,21 @@ class Ui_frmCryptoRSA(object):
         self.lbubicacion_archivo_desc.setText("")
         self.temensaje_desc.setText("")
 
+    def showDialogMessage(self,mensaje):
+        """
+        
+        :param mensaje:
+        :return:
+        """
+        msj = QtWidgets.QMessageBox()
+        msj.setIcon(QtWidgets.QMessageBox.Warning)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap("files/privacy.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        msj.setWindowIcon(icon)
+        msj.setText(mensaje)
+        msj.setWindowTitle("Información Faltante")
+        msj.setStandardButtons(QtWidgets.QMessageBox.Ok)
+        msj.exec_()
 
 if __name__ == "__main__":
     import sys
