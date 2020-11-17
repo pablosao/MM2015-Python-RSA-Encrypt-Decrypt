@@ -320,14 +320,18 @@ class Ui_frmCryptoRSA(object):
         Metodo para seleccionar la carpeta donde se guardará la llave publica
         :return: None
         """
-        # Limpiamos los campos
-        self.clearFields()
+        try:
+            # Limpiamos los campos
+            self.clearFields()
 
-        # Se muestra ventana para seleccionar carpeta de destino
-        fname = QtWidgets.QFileDialog.getExistingDirectory()
+            # Se muestra ventana para seleccionar carpeta de destino
+            fname = QtWidgets.QFileDialog.getExistingDirectory()
 
-        # Se asigna el path de la carpeta al text box de ubicacion
-        self.tbubicacion_exporta_key.setText(fname)
+            # Se asigna el path de la carpeta al text box de ubicacion
+            self.tbubicacion_exporta_key.setText(fname)
+        except Exception as e:
+            self.showDialogMessage(e,QtWidgets.QMessageBox.Critical)
+            #print(e)
 
     def selectEncFile(self):
         """
@@ -355,7 +359,8 @@ class Ui_frmCryptoRSA(object):
                 # habilitamos el cambpo para edición
                 self.temensaje_enc.setEnabled(False)
         except Exception as e:
-            print(e)
+            self.showDialogMessage(e, QtWidgets.QMessageBox.Critical)
+            # print(e)
 
     def EncriptFile(self):
         """
@@ -363,48 +368,53 @@ class Ui_frmCryptoRSA(object):
         antes de iniciar el proceso
         :return: None
         """
+        try:
+            # Obtenemos los datos seleccionados por el usuario
+            path_key = self.tbubicacion_exporta_key.text()
+            path_file = self.lbubicacion_archivo_enc.text()
+            message = self.temensaje_enc.toPlainText()
 
-        # Obtenemos los datos seleccionados por el usuario
-        path_key = self.tbubicacion_exporta_key.text()
-        path_file = self.lbubicacion_archivo_enc.text()
-        message = self.temensaje_enc.toPlainText()
+            # Comprobamos si los datos estan llenos
+            if (self.isNotBlank(path_key)):
+                if (self.isNotBlank(path_file)):
+                    if (self.isNotBlank(message)):
 
-        # Comprobamos si los datos estan llenos
-        if (self.isNotBlank(path_key)):
-            if (self.isNotBlank(path_file)):
-                if (self.isNotBlank(message)):
+                        # Se inicia proceso de encriptado
+                        QtWidgets.QApplication.setOverrideCursor(QtCore.Qt.WaitCursor)
 
-                    # Se inicia proceso de encriptado
-                    QtWidgets.QApplication.setOverrideCursor(QtCore.Qt.WaitCursor)
+                        public_key = pRSA.genera_key(path_key)
+                        enc_file = Path(path_file)
 
-                    public_key = pRSA.genera_key(path_key)
-                    enc_file = Path(path_file)
+                        mensaje_enc = pRSA.Encrypt(enc_file.read_bytes(),public_key)
 
-                    mensaje_enc = pRSA.Encrypt(enc_file.read_bytes(),public_key)
+                        # Escribimos en archivo
+                        archivo_encriptado = Path(path_file)
+                        archivo_encriptado.touch(mode=0o600)
+                        archivo_encriptado.write_bytes(mensaje_enc)
 
-                    # Escribimos en archivo
-                    archivo_encriptado = Path(path_file)
-                    archivo_encriptado.touch(mode=0o600)
-                    archivo_encriptado.write_bytes(mensaje_enc)
+                        self.clearFields()
+                        self.temensaje_enc.setReadOnly(True)
+                        self.temensaje_enc.setEnabled(True)
+                        self.temensaje_enc.setText(mensaje_enc.decode())
 
-                    self.clearFields()
-                    self.temensaje_enc.setReadOnly(True)
-                    self.temensaje_enc.setEnabled(True)
-                    self.temensaje_enc.setText(mensaje_enc.decode())
+                        QtWidgets.QApplication.restoreOverrideCursor()
 
-                    QtWidgets.QApplication.restoreOverrideCursor()
-
+                    else:
+                        #print("El archivo que selecciono se encuentra vacio")
+                        self.showDialogMessage("El archivo que ha seleccionado se encuentra vacío, debe seleccionar otro archivo o ingresar un texto.")
                 else:
-                    #print("El archivo que selecciono se encuentra vacio")
-                    self.showDialogMessage("El archivo que ha seleccionado se encuentra vacío, debe seleccionar otro archivo o ingresar un texto.")
+                    #print("Debe ingresar la ubicación del archivo a desencriptar")
+                    self.showDialogMessage("Debe seleccionar ubicación del archivo a encriptar")
+                    self.selectEncFile()
             else:
-                #print("Debe ingresar la ubicación del archivo a desencriptar")
-                self.showDialogMessage("Debe seleccionar ubicación del archivo a encriptar")
-                self.selectEncFile()
-        else:
-            #print("Debe ingresar la ubicación para guardar la llave para desencriptar")
-            self.showDialogMessage("Debe seleccionar ubicación para exportar la llave de desencriptación")
-            self.selectExportKey()
+                #print("Debe ingresar la ubicación para guardar la llave para desencriptar")
+                self.showDialogMessage("Debe seleccionar ubicación para exportar la llave de desencriptación")
+                self.selectExportKey()
+        except Exception as e:
+            self.showDialogMessage(e,QtWidgets.QMessageBox.Critical)
+            #print(e)
+
+
 
 
     ############################################################
@@ -431,7 +441,8 @@ class Ui_frmCryptoRSA(object):
             self.tbubicacion_key_desc.setText(fname)
 
         except Exception as e:
-            print(e)
+            self.showDialogMessage(e, QtWidgets.QMessageBox.Critical)
+            # print(e)
 
     def selectDecFile(self):
         """
@@ -458,7 +469,8 @@ class Ui_frmCryptoRSA(object):
                 self.temensaje_desc.setText("")
 
         except Exception as e:
-            print(e)
+            self.showDialogMessage(e, QtWidgets.QMessageBox.Critical)
+            # print(e)
 
     def DecryptFile(self):
         """
@@ -466,46 +478,51 @@ class Ui_frmCryptoRSA(object):
         :return: None
         """
 
-        # Obtenemos los datos seleccionados por el usuario
-        path_key = self.tbubicacion_key_desc.text()
-        path_file = self.lbubicacion_archivo_desc.text()
-        message = self.temensaje_desc.toPlainText()
+        try:
+            # Obtenemos los datos seleccionados por el usuario
+            path_key = self.tbubicacion_key_desc.text()
+            path_file = self.lbubicacion_archivo_desc.text()
+            message = self.temensaje_desc.toPlainText()
 
-        # Comprobamos si los datos estan llenos
-        if (self.isNotBlank(path_key)):
-            if (self.isNotBlank(path_file)):
-                if (self.isNotBlank(message)):
+            # Comprobamos si los datos estan llenos
+            if (self.isNotBlank(path_key)):
+                if (self.isNotBlank(path_file)):
+                    if (self.isNotBlank(message)):
 
-                    # Se inicia proceso de encriptado
-                    QtWidgets.QApplication.setOverrideCursor(QtCore.Qt.WaitCursor)
+                        # Se inicia proceso de encriptado
+                        QtWidgets.QApplication.setOverrideCursor(QtCore.Qt.WaitCursor)
 
 
-                    desc_file = Path(path_file)
-                    llave_privada = Path(path_key)
+                        desc_file = Path(path_file)
+                        llave_privada = Path(path_key)
 
-                    mensaje_dec = pRSA.Decrypt(desc_file.read_text(), llave_privada.read_bytes())
+                        mensaje_dec = pRSA.Decrypt(desc_file.read_text(), llave_privada.read_bytes())
 
-                    # Escribimos en archivo
-                    archivo_desencriptado = Path(path_file)
-                    archivo_desencriptado.touch(mode=0o600)
-                    archivo_desencriptado.write_bytes(mensaje_dec)
+                        # Escribimos en archivo
+                        archivo_desencriptado = Path(path_file)
+                        archivo_desencriptado.touch(mode=0o600)
+                        archivo_desencriptado.write_bytes(mensaje_dec)
 
-                    self.clearFields()
-                    self.temensaje_desc.setText(mensaje_dec.decode())
+                        self.clearFields()
+                        self.temensaje_desc.setText(mensaje_dec.decode())
 
-                    QtWidgets.QApplication.restoreOverrideCursor()
+                        QtWidgets.QApplication.restoreOverrideCursor()
 
+                    else:
+                        #print("El archivo que selecciono se encuentra vacio")
+                        self.showDialogMessage("El archivo que ha seleccionado se encuentra vacío, debe seleccionar otro archivo")
                 else:
-                    #print("El archivo que selecciono se encuentra vacio")
-                    self.showDialogMessage("El archivo que ha seleccionado se encuentra vacío, debe seleccionar otro archivo")
+                    #print("Debe ingresar la ubicación del archivo a desencriptar")
+                    self.showDialogMessage("Debe seleccionar el archivo que desea desencriptar")
+                    self.selectDecFile()
             else:
-                #print("Debe ingresar la ubicación del archivo a desencriptar")
-                self.showDialogMessage("Debe seleccionar el archivo que desea desencriptar")
-                self.selectDecFile()
-        else:
-            #print("Debe ingresar la ubicación para guardar la llave para desencriptar")
-            self.showDialogMessage("Debe seleccionar la llave privada para desencriptar el mensaje")
-            self.selectImportKey()
+                #print("Debe ingresar la ubicación para guardar la llave para desencriptar")
+                self.showDialogMessage("Debe seleccionar la llave privada para desencriptar el mensaje")
+                self.selectImportKey()
+
+        except Exception as e:
+            self.showDialogMessage(e, QtWidgets.QMessageBox.Critical)
+            # print(e)
 
 
     def clearFields(self):
@@ -525,14 +542,10 @@ class Ui_frmCryptoRSA(object):
         self.lbubicacion_archivo_desc.setText("")
         self.temensaje_desc.setText("")
 
-    def showDialogMessage(self,mensaje):
-        """
-        
-        :param mensaje:
-        :return:
-        """
+    def showDialogMessage(self,mensaje,icono=QtWidgets.QMessageBox.Warning):
+
         msj = QtWidgets.QMessageBox()
-        msj.setIcon(QtWidgets.QMessageBox.Warning)
+        msj.setIcon(icono)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap("files/privacy.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         msj.setWindowIcon(icon)
