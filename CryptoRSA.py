@@ -8,11 +8,11 @@
 # Descripción: El programa genera las llaves (pública y privada) para
 #              encriptar el texto contenido en un archivo .txt
 #
-
+import sys
 from PyQt5 import QtCore, QtGui, QtWidgets
 from pathlib import Path
 import ManagerRSA as pRSA
-
+from plyer import notification
 
 class Ui_frmCryptoRSA(object):
     def setupUi(self, frmCryptoRSA):
@@ -300,6 +300,7 @@ class Ui_frmCryptoRSA(object):
 "<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;\"><br /></p></body></html>"))
         self.tabcontrol.setTabText(self.tabcontrol.indexOf(self.tabinformacion), _translate("frmCryptoRSA", "Información"))
 
+
     def isNotBlank(self, string_value):
         """
         Metodo para validar si un string es nulo o vacio
@@ -327,8 +328,12 @@ class Ui_frmCryptoRSA(object):
             # Se muestra ventana para seleccionar carpeta de destino
             fname = QtWidgets.QFileDialog.getExistingDirectory()
 
-            # Se asigna el path de la carpeta al text box de ubicacion
-            self.tbubicacion_exporta_key.setText(fname)
+            if(self.isNotBlank(fname)):
+                # Se asigna el path de la carpeta al text box de ubicacion
+                self.tbubicacion_exporta_key.setText(fname)
+            else:
+                self.tbubicacion_exporta_key.setText("")
+
         except Exception as e:
             self.showDialogMessage(e,QtWidgets.QMessageBox.Critical)
             #print(e)
@@ -342,22 +347,27 @@ class Ui_frmCryptoRSA(object):
             # Solicitamos el ingreso del archivo
             fname, _ = QtWidgets.QFileDialog.getOpenFileName(None, caption="Select a file...",
                                                              directory='./', filter="Archivos de Texto (*.txt)")
-            # Colocamos el path visible para el usuario
-            self.lbubicacion_archivo_enc.setText(fname)
 
-            # Creamos una ruta Path
-            fname = Path(fname)
+            if(self.isNotBlank(fname)):
+                # Colocamos el path visible para el usuario
+                self.lbubicacion_archivo_enc.setText(fname)
 
-            # leemos archivo
-            if (fname.exists()):
-                # mostramos el texto
-                self.temensaje_enc.setText(fname.read_text())
-                # habilitamos el cambpo para edición
-                self.temensaje_enc.setEnabled(True)
+                # Creamos una ruta Path
+                fname = Path(fname)
+
+                # leemos archivo
+                if (fname.exists()):
+                    # mostramos el texto
+                    self.temensaje_enc.setText(fname.read_text())
+                    # habilitamos el cambpo para edición
+                    self.temensaje_enc.setEnabled(True)
+                else:
+                    self.temensaje_enc.setText("")
+                    # habilitamos el cambpo para edición
+                    self.temensaje_enc.setEnabled(False)
             else:
                 self.temensaje_enc.setText("")
-                # habilitamos el cambpo para edición
-                self.temensaje_enc.setEnabled(False)
+
         except Exception as e:
             self.showDialogMessage(e, QtWidgets.QMessageBox.Critical)
             # print(e)
@@ -379,6 +389,14 @@ class Ui_frmCryptoRSA(object):
                 if (self.isNotBlank(path_file)):
                     if (self.isNotBlank(message)):
 
+                        # Notificación visual de que inicia la encriptación
+                        notification.notify(
+                             title="CryptoRSA"
+                            ,message="Iniciando Encriptación"
+                            ,app_icon="files/Encriptado.ico"
+                            ,timeout=3
+                        )
+
                         # Se inicia proceso de encriptado
                         QtWidgets.QApplication.setOverrideCursor(QtCore.Qt.WaitCursor)
 
@@ -397,6 +415,14 @@ class Ui_frmCryptoRSA(object):
                         self.temensaje_enc.setEnabled(True)
                         self.temensaje_enc.setText(mensaje_enc.decode())
 
+                        # Notificación visual de que inicia la encriptación
+                        notification.notify(
+                            title="CryptoRSA"
+                            , message="Encriptación Finalizada."
+                            , app_icon="files/Encriptado.ico"
+                            , timeout=3
+                        )
+
                         QtWidgets.QApplication.restoreOverrideCursor()
 
                     else:
@@ -410,11 +436,10 @@ class Ui_frmCryptoRSA(object):
                 #print("Debe ingresar la ubicación para guardar la llave para desencriptar")
                 self.showDialogMessage("Debe seleccionar ubicación para exportar la llave de desencriptación")
                 self.selectExportKey()
+
         except Exception as e:
             self.showDialogMessage(e,QtWidgets.QMessageBox.Critical)
             #print(e)
-
-
 
 
     ############################################################
@@ -437,8 +462,12 @@ class Ui_frmCryptoRSA(object):
             # Solicitamos el ingreso del archivo
             fname, _ = QtWidgets.QFileDialog.getOpenFileName(None, caption="Select a file...",
                                                              directory='./', filter="Llave Publica (*.pem)")
-            # Colocamos el path visible para el usuario
-            self.tbubicacion_key_desc.setText(fname)
+            if(self.isNotBlank(fname)):
+                # Colocamos el path visible para el usuario
+                self.tbubicacion_key_desc.setText(fname)
+
+            else:
+                self.tbubicacion_key_desc.setText("")
 
         except Exception as e:
             self.showDialogMessage(e, QtWidgets.QMessageBox.Critical)
@@ -454,17 +483,20 @@ class Ui_frmCryptoRSA(object):
             # Solicitamos el ingreso del archivo
             fname, _ = QtWidgets.QFileDialog.getOpenFileName(None, caption="Select a file...",
                                                              directory='./', filter="Archivos de Texto (*.txt)")
-            # Colocamos el path visible para el usuario
-            self.lbubicacion_archivo_desc.setText(fname)
+            if(self.isNotBlank(fname)):
+                # Colocamos el path visible para el usuario
+                self.lbubicacion_archivo_desc.setText(fname)
 
-            # Creamos una ruta Path
-            fname = Path(fname)
+                # Creamos una ruta Path
+                fname = Path(fname)
 
-            # leemos archivo
-            if (fname.exists()):
-                # mostramos el texto
-                self.temensaje_desc.setText(fname.read_text())
+                # leemos archivo
+                if (fname.exists()):
+                    # mostramos el texto
+                    self.temensaje_desc.setText(fname.read_text())
 
+                else:
+                    self.temensaje_desc.setText("")
             else:
                 self.temensaje_desc.setText("")
 
@@ -492,6 +524,13 @@ class Ui_frmCryptoRSA(object):
                         # Se inicia proceso de encriptado
                         QtWidgets.QApplication.setOverrideCursor(QtCore.Qt.WaitCursor)
 
+                        # Notificación visual de que inicia la encriptación
+                        notification.notify(
+                            title="CryptoRSA"
+                            , message="Iniciando Desencriptación"
+                            , app_icon="files/Desencriptado.ico"
+                            , timeout=3
+                        )
 
                         desc_file = Path(path_file)
                         llave_privada = Path(path_key)
@@ -505,6 +544,14 @@ class Ui_frmCryptoRSA(object):
 
                         self.clearFields()
                         self.temensaje_desc.setText(mensaje_dec.decode())
+
+                        # Notificación visual de que inicia la encriptación
+                        notification.notify(
+                            title="CryptoRSA"
+                            , message="Desencriptación Finalizada"
+                            , app_icon="files/Desencriptado.ico"
+                            , timeout=3
+                        )
 
                         QtWidgets.QApplication.restoreOverrideCursor()
 
@@ -555,7 +602,7 @@ class Ui_frmCryptoRSA(object):
         msj.exec_()
 
 if __name__ == "__main__":
-    import sys
+
     app = QtWidgets.QApplication(sys.argv)
     frmCryptoRSA = QtWidgets.QMainWindow()
     ui = Ui_frmCryptoRSA()
