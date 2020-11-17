@@ -401,9 +401,12 @@ class Ui_frmCryptoRSA(object):
                         QtWidgets.QApplication.setOverrideCursor(QtCore.Qt.WaitCursor)
 
                         public_key = pRSA.genera_key(path_key)
-                        enc_file = Path(path_file)
+                        #enc_file = Path(path_file)
 
-                        mensaje_enc = pRSA.Encrypt(enc_file.read_bytes(),public_key)
+                        #mensaje_enc = pRSA.Encrypt(enc_file.read_bytes(),public_key)
+
+                        # se envia el mensaje puesto el área de texto
+                        mensaje_enc = pRSA.Encrypt(message.encode(), public_key)
 
                         # Escribimos en archivo
                         archivo_encriptado = Path(path_file)
