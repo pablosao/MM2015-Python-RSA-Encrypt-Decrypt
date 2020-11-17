@@ -13,8 +13,10 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from pathlib import Path
 import ManagerRSA as pRSA
 from plyer import notification
+import threading
 
 class Ui_frmCryptoRSA(object):
+
     def setupUi(self, frmCryptoRSA):
         frmCryptoRSA.setObjectName("frmCryptoRSA")
         frmCryptoRSA.setWindowModality(QtCore.Qt.NonModal)
@@ -300,6 +302,14 @@ class Ui_frmCryptoRSA(object):
 "<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;\"><br /></p></body></html>"))
         self.tabcontrol.setTabText(self.tabcontrol.indexOf(self.tabinformacion), _translate("frmCryptoRSA", "Información"))
 
+    def thread_message(self,titulo,mensaje,icono):
+        notification.notify(
+            title=titulo
+            , app_name="CryptoRSA"
+            , message=mensaje
+            , app_icon=icono
+            , timeout=1
+        )
 
     def isNotBlank(self, string_value):
         """
@@ -390,16 +400,21 @@ class Ui_frmCryptoRSA(object):
                     if (self.isNotBlank(message)):
 
                         # Notificación visual de que inicia la encriptación
-                        notification.notify(
-                             title="CryptoRSA"
-                            ,message="Iniciando Encriptación"
-                            ,app_icon="files/Encriptado.ico"
-                            ,timeout=3
-                        )
+                        x = threading.Thread(target=self.thread_message, args=("Encriptación", "Iniciando Solicitud. El proceso puede demorar", "files/Encriptado.ico",))
+                        x.start()
+
+                        #notification.notify(
+                        #     title="Encriptación"
+                        #    ,app_name="CryptoRSA"
+                        #    ,message="Iniciando Solicitud. El proceso puede demorar"
+                        #    ,app_icon="files/Encriptado.ico"
+                        #    ,timeout=1
+                        #)
 
                         # Se inicia proceso de encriptado
                         QtWidgets.QApplication.setOverrideCursor(QtCore.Qt.WaitCursor)
 
+                        # Generación de llaves
                         public_key = pRSA.genera_key(path_key)
                         #enc_file = Path(path_file)
 
@@ -418,13 +433,19 @@ class Ui_frmCryptoRSA(object):
                         self.temensaje_enc.setEnabled(True)
                         self.temensaje_enc.setText(mensaje_enc.decode())
 
-                        # Notificación visual de que inicia la encriptación
-                        notification.notify(
-                            title="CryptoRSA"
-                            , message="Encriptación Finalizada."
-                            , app_icon="files/Encriptado.ico"
-                            , timeout=3
-                        )
+                        # Notificación visual de que finaliza la encriptación
+                        x = threading.Thread(target=self.thread_message, args=(
+                        "Encriptación", "Encriptación Finalizada.", "files/Encriptado.ico",))
+                        x.start()
+
+                        # Notificación visual de que finaliza la encriptación
+                        #notification.notify(
+                        #    title="Encriptación"
+                        #    , app_name="CryptoRSA"
+                        #    , message="Encriptación Finalizada."
+                        #    , app_icon="files/Encriptado.ico"
+                        #    , timeout=3
+                        #)
 
                         QtWidgets.QApplication.restoreOverrideCursor()
 
@@ -441,7 +462,7 @@ class Ui_frmCryptoRSA(object):
                 self.selectExportKey()
 
         except Exception as e:
-            self.showDialogMessage(e,QtWidgets.QMessageBox.Critical)
+            self.showDialogMessage("Ocurrio un problema al realizar la encriptación.",QtWidgets.QMessageBox.Critical)
             #print(e)
 
 
@@ -529,10 +550,11 @@ class Ui_frmCryptoRSA(object):
 
                         # Notificación visual de que inicia la encriptación
                         notification.notify(
-                            title="CryptoRSA"
+                            title="Desencriptación"
+                            , app_name="CryptoRSA"
                             , message="Iniciando Desencriptación"
                             , app_icon="files/Desencriptado.ico"
-                            , timeout=3
+                            , timeout=1
                         )
 
                         desc_file = Path(path_file)
@@ -550,10 +572,11 @@ class Ui_frmCryptoRSA(object):
 
                         # Notificación visual de que inicia la encriptación
                         notification.notify(
-                            title="CryptoRSA"
+                            title="Desencriptación"
+                            , app_name="CryptoRSA"
                             , message="Desencriptación Finalizada"
                             , app_icon="files/Desencriptado.ico"
-                            , timeout=3
+                            , timeout=1
                         )
 
                         QtWidgets.QApplication.restoreOverrideCursor()
@@ -571,7 +594,7 @@ class Ui_frmCryptoRSA(object):
                 self.selectImportKey()
 
         except Exception as e:
-            self.showDialogMessage(e, QtWidgets.QMessageBox.Critical)
+            self.showDialogMessage("Ocurrio un problema al desencriptar el archivo. Verifique su clave de desencriptación y el archivo a desencriptar", QtWidgets.QMessageBox.Critical)
             # print(e)
 
 
