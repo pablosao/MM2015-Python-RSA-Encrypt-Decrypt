@@ -1,4 +1,5 @@
 pycryptodome==3.9.9
+pycryptodomex==3.9.9
 pathlib==1.0.1
 PyQt5==5.15.1
 plyer==2.0.0
