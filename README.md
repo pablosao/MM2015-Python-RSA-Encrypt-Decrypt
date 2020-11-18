@@ -1,9 +1,9 @@
 # Encriptación y Desencriptación con RSA 
 El proyecto consiste en escribir un programa capaz de encriptar y desencriptar un mensaje, utilizando el sistema criptográfico RSA.
 
-## Dependencias
+## Requerimientos del sistema
 
-Antes de ejecutar la aplicación, es necesario instalar los módulos utilizados, el cual se puede hacer mediante el archivo **requirements.txt**, con el siguiente comando en la Terminal o en el CMD:
+Para su ejecución es requerido **Python 3.8**, además de contar con los módulos utilizados en el programa, el cual se puede hacer mediante el archivo **requirements.txt**, con el siguiente comando en la Terminal o en el CMD:
 
 ```console
 $ pip install -r requirements.txt
