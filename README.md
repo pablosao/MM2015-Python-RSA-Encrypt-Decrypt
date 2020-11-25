@@ -1,6 +1,10 @@
 # Encriptación y Desencriptación con RSA 
 El proyecto consiste en escribir un programa capaz de encriptar y desencriptar un mensaje, utilizando el sistema criptográfico RSA.
 
+<p align="center">
+  <img src="img/CryptoRSA-desc.png"></img>
+</p>
+
 ## Requerimientos del sistema
 
 Para su ejecución es requerido **Python 3.8**, además de contar con los módulos utilizados en el programa, el cual se puede hacer mediante el archivo **requirements.txt**, con el siguiente comando en la Terminal o en el CMD:
