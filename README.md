@@ -2,7 +2,7 @@
 El proyecto consiste en escribir un programa capaz de encriptar y desencriptar un mensaje, utilizando el sistema criptográfico RSA.
 
 <p align="center">
-  <img src="img/CryptoRSA-desc.png" width="500" height="350"></img>
+  <img src="imgCryptoRSA-info.png" width="500" height="350"></img>
 </p>
 
 ## Requerimientos del sistema
